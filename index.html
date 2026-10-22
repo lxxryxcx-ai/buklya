@@ -1,0 +1,920 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<meta property="og:title" content="Букля, ретро-парикмахерская на Пяти углах">
+<meta property="og:description" content="Стрижём и красим каждый день с 2012 года. Рубинштейна, 40 · Ломоносова, 26">
+<meta property="og:image" content="https://lxxryxcx-ai.github.io/buklya/img/og.jpg">
+<meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
+<title>Букля, ретро-парикмахерская на Пяти углах</title>
+<!-- v7 «зал в разрезе» (21.10–22.10): concept/round-4-whole.md; прошлая версия — v6/ (архив, не показывать) -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:wght@500;600;700&family=Jost:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* Система v6 (concept/round-2.md, qa/skills-pass-v6.md):
+   полоска (их обои) = стена, на ней только рамки и круги; текст только на белом; стена и белое чередуются;
+   одна рамка: паспарту 8px + чёрная рама 2px + одна тень, острые углы, у окна записи тоже; у фото в рамке всегда виден край;
+   два шрифта: Cormorant заглавными для заголовков, Jost для текста; один акцент — их красное −20%;
+   нажимаемое: пилюля (кнопки) или рамка целиком (карточки); круг — только знак и штамп;
+   общая запись одна — «Запись в Буклю»: кнопка на первом экране и в блоке дня, дальше плашка внизу справа (прячется, где на экране та же кнопка);
+   уточнения — ссылки: «Запись к Варваре» (окно с её салоном и строкой, что дальше), «Онлайн-запись» со стрелкой у входа — уход в их Sonline всегда со стрелкой; в верхней полосе записи нет — логотип, меню, телефон;
+   на компьютере сетка 12 колонок: адреса и зал по три, мастера и пресса по четыре;
+   мастера — те, кто есть в их онлайн-записи (Sonline, 21.10); «Запись к …» ведёт сразу к мастеру в его салоне, у работающих в обоих — выбор салона;
+   отступы по шкале 8: 8 16 24 32 48 64 96 128. */
+:root{
+  --ink:#141414; --ink-2:#2b2b2b; --muted:#555; --line:#d9d9d9;
+  --s1:#d4d4d4; --s2:#f2f2f2; --stripe:24px;
+  --red:#9e432d;
+  --g:16px; --head:64px; --sec:96px; --band:64px;
+  --frame:0 0 0 2px var(--ink),0 2px 3px rgba(20,20,20,.08),0 12px 24px rgba(20,20,20,.10);
+  --serif:Cormorant,Georgia,serif; --sans:Jost,system-ui,sans-serif;
+  --ease:cubic-bezier(.22,1,.36,1);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#fff;color:var(--ink);font:400 16px/1.5 var(--sans);-webkit-font-smoothing:antialiased;font-variant-numeric:lining-nums}
+img{display:block;max-width:100%}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+h1,h2,h3{font-weight:inherit;text-wrap:balance}
+p,small,q,blockquote{text-wrap:pretty}
+/* одна кривая у всех переходов: короткая запись transition у элементов её не сбрасывает */
+*,*::before,*::after{transition-timing-function:var(--ease)!important}
+.nw{white-space:nowrap}
+::selection{background:var(--red);color:#fff}
+:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{transition-duration:.01ms!important}}
+/* переходы по меню и «Все цены» — плавной прокруткой; раздел встаёт под шапку, а не под неё */
+@media (prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}}
+[id]{scroll-margin-top:var(--head)}
+/* фото проявляются по мере загрузки, а не выскакивают; без скрипта видны сразу */
+.frame img,.card .ph img{transition:opacity .4s}
+img.wait{opacity:0}
+/* уход в их онлайн-запись (другое окно) — всегда со стрелкой */
+.ext{display:inline-block;width:12px;height:12px;margin-left:6px;stroke:currentColor;stroke-width:1.5;fill:none;vertical-align:0}
+.wrap{max-width:1344px;margin:0 auto;padding:0 var(--g)}
+/* обои: размер полос постоянный, под них подгоняется ширина стены — нечётное число полос, начало и конец серой полосой */
+.stripes{background:repeating-linear-gradient(90deg,var(--s1) 0 var(--stripe),var(--s2) var(--stripe) calc(var(--stripe) * 2));
+  width:calc(round(down, 100% - var(--stripe), var(--stripe) * 2) + var(--stripe));margin-inline:auto}
+.serif{font-family:var(--serif);font-weight:600;text-transform:uppercase;letter-spacing:.02em;line-height:.98}
+.spaced{font-family:var(--sans);font-weight:500;font-size:12px;letter-spacing:.34em;text-transform:uppercase}
+.h2{font-size:clamp(34px,10vw,44px)}
+.red{color:var(--red)}
+.frame{display:block;background:#fff;padding:8px;box-shadow:var(--frame)}
+.frame img{width:100%;height:100%;object-fit:cover}
+.btn{display:inline-flex;align-items:center;justify-content:center;height:48px;padding:0 24px;border-radius:999px;font:500 16px/1 var(--sans);white-space:nowrap;transition:background-color .4s,color .4s}
+.btn-ink{background:var(--ink);color:#fff}
+.btn-ink:hover{background:#3a3a3a}
+.btn-line{background:#fff;box-shadow:inset 0 0 0 1px var(--ink)}
+.btn-line:hover{background:var(--ink);color:#fff}
+.btn-sm{height:44px;padding:0 20px;font-size:15px}
+.link{display:inline-block;padding:12px 0;text-decoration:underline;text-underline-offset:4px;text-decoration-thickness:1px;font-weight:500;transition:color .4s}
+.link:hover{color:var(--muted)}
+
+/* шапка */
+header{position:sticky;top:0;z-index:5;background:#fff;height:var(--head);border-bottom:1px solid var(--line)}
+header .wrap{height:100%;display:flex;align-items:center;justify-content:space-between}
+.logo{display:flex;align-items:center;gap:8px;height:48px;min-width:44px}
+.logo .c{width:40px;height:40px}
+.logo .w{height:24px;width:auto}
+/* ссылки меню шире слова на 5 px с каждой стороны (зона нажатия от 44 px), промежутки меньше на столько же — на глаз шаг тот же */
+header nav{display:flex;gap:6px;font-size:15px;margin-right:-5px}
+header nav a{padding:12px 5px;transition:color .4s}
+header .tel{display:none;white-space:nowrap}
+header .right{display:none}
+@media (max-width:359px){header nav{gap:2px;font-size:14px}.logo .w{display:none}}
+
+/* правило: полоска — стена, на ней только рамки и круги; текст только на белом (поле страницы или паспарту рамки);
+   акцию отмечает красный штамп −20%, подложек под текст нет */
+.wall{padding:var(--band) var(--g)}
+.stamp{position:absolute;width:128px;height:128px;border-radius:50%;background:#fff;color:var(--red);text-align:center;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;transform:rotate(-12deg);
+  box-shadow:inset 0 0 0 2px var(--red),inset 0 0 0 5px #fff,inset 0 0 0 6px var(--red),0 6px 14px rgba(20,20,20,.12);transition:background-color .4s}
+a.stamp:hover{background:#f8ebe7}
+.stamp i{font-style:normal;font-size:11px;font-weight:500;letter-spacing:.16em;text-transform:uppercase}
+.stamp b{font-family:var(--serif);font-weight:700;font-size:36px;line-height:.9;margin:2px 0}
+.stamp span{font-size:11px;font-weight:500;letter-spacing:.02em;text-transform:uppercase;max-width:96px;line-height:1.15}
+
+/* первый экран: стена с кошкой + белое поле с текстом */
+/* первый экран не на всё окно: снизу выглядывает верх фото зала — видно, что дальше есть что листать (замер _peek.mjs).
+   На телефоне кошка подстраивается под высоту экрана; зал — продолжение первого экрана, поэтому до него отступ стены, а не раздела */
+.hero .wall{padding:24px var(--g)}
+.hero .cat{position:relative;width:clamp(168px,calc(100dvh - 594px),min(76vw,300px));aspect-ratio:1;margin:0 auto}
+.hero .cat img{width:100%;height:100%}
+.hero .cat .stamp{right:-24px;bottom:-16px}
+/* на низких телефонах кошка меньше — штамп чуть меньше и уходит к краю круга, морду не закрывает */
+@media (max-width:1023px) and (max-height:800px){.hero .cat .stamp{right:-56px;bottom:-12px;transform:rotate(-12deg) scale(.85);transform-origin:100% 100%}}
+.hero .txt{padding:24px var(--g) 0;text-align:center}
+.hero h1 .spaced{display:block}
+.hero h1 .serif{display:block;font-size:clamp(40px,12vw,52px);margin-top:8px}
+.hero .sub{font-size:18px;margin-top:16px}
+.hero .where{font-size:14px;font-weight:500;margin-top:8px;color:var(--ink-2)}
+.hero .act{margin-top:24px;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:8px 24px}
+
+/* зал: картина на белой стене */
+.hall{padding-top:var(--band)}
+/* зал: их стена из трёх рамок — большой зал и две детали, сетка та же, что у мастеров и адресов */
+/* minmax(0,1fr): в Safari колонка «1fr» растягивается по ширине исходного фото и страница уезжает вбок */
+.hang{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px}
+.hang .big{grid-column:1/-1;aspect-ratio:3/2}
+.hang .frame:not(.big){aspect-ratio:4/3}
+.hall p{font-family:var(--serif);font-weight:500;font-size:24px;line-height:1.3;max-width:640px;margin-top:32px}
+
+/* день: текст на белом + стена с работой в рамке и штампом */
+.day{margin-top:var(--sec)}
+.day .txt{padding:0 var(--g)}
+.day h2{font-size:clamp(30px,9.6vw,56px)}
+.day .say{font-size:18px;line-height:1.45;margin-top:16px;max-width:460px}
+/* строки скидки дня: старая цена зачёркнута, новая красным — как на их страницах цен «2190 − 20% = 1752» */
+.deal{margin-top:24px;max-width:520px}
+.deal .row{min-height:0;padding-top:8px;grid-template-rows:auto}
+.deal s{color:var(--muted);font-weight:400;margin-right:4px}
+.deal b{font-weight:500}
+/* на телефоне длинное название переносится — точки убираем, цена справа по верху */
+@media (max-width:1023px){.deal .row{grid-template-columns:minmax(0,1fr) auto}.deal .dots{display:none}}
+.day .act{margin-top:24px;display:flex;flex-wrap:wrap;align-items:center;gap:8px 24px}
+.day .wall{margin-top:32px}
+.day .pic{position:relative;width:min(420px,calc(100% - 24px));margin:0 auto}
+.day .photo{aspect-ratio:4/5}
+.day .pic .stamp{right:-10px;top:-14px}
+
+/* цены: прайс с точками, как на старой доске */
+.prices{padding-top:var(--sec)}
+/* отступ до первой группы — у всего блока групп, а не у первой группы: иначе на компьютере первая группа пары съезжает вниз */
+.groups{margin-top:32px}
+.group{margin-top:48px}
+.groups .pair:first-child .group:first-child{margin-top:0}
+.gh{padding-bottom:8px;border-bottom:2px solid var(--ink);margin-bottom:8px}
+.gh h3{font-family:var(--serif);font-weight:700;font-size:26px;line-height:1.05}
+.gh p{font-size:14px;margin-top:4px}
+/* строка прайса: название · точки · цена; пояснение строкой ниже, чтобы точки начинались сразу за названием */
+/* одна высота строки у всех: название с ценой и строка пояснения; пояснения нет — место всё равно остаётся */
+.row{display:grid;grid-template-columns:auto minmax(16px,1fr) auto;grid-template-rows:auto auto;column-gap:8px;row-gap:4px;align-content:start;min-height:64px;padding-top:12px}
+.row .n{font-size:16px;line-height:1.35}
+.row small{grid-column:1/-1;font-size:13px;line-height:1.4;color:var(--muted);min-height:1.4em}
+.row .dots{height:1em;border-bottom:2px dotted #a9a9a9}
+.row .p{white-space:nowrap;font-size:16px;line-height:1.35;font-weight:500}
+.note{font-size:13px;line-height:1.5;color:var(--muted);margin-top:16px;max-width:60ch}
+.today-tag{display:none;font-weight:500;color:var(--ink)}
+/* самые узкие экраны: кегль прайса чуть меньше, чтобы строки и заголовки групп не переносились и сетка держалась */
+@media (max-width:359px){.gh h3{font-size:21px}.gh p{font-size:12px}.row .n,.row .p{font-size:14px}.row small{font-size:12px}.row{column-gap:6px}}
+.now .today-tag{display:inline}
+
+/* мастера: заголовок на белом, стена с портретами; подпись на паспарту внутри той же рамки */
+.masters{margin-top:var(--sec)}
+.masters .wall{margin-top:32px}
+.masters .wall .wrap{padding:0}
+.cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px 16px;grid-auto-rows:1fr}
+.card{display:flex;flex-direction:column;background:#fff;padding:8px;box-shadow:var(--frame);color:inherit}
+/* портреты готовые: ч/б, вырезаны на тон фотобумаги #e4e4e4, тон лиц выровнен (site-audit/crop-portraits.py) */
+.card .ph{display:block;aspect-ratio:4/5;overflow:hidden;background:#e4e4e4}
+.card .ph img{width:100%;height:100%;object-fit:cover;object-position:50% 18%}
+.card .cap{flex:1;display:flex;flex-direction:column;align-items:flex-start;padding:16px 0 8px}
+.card h3{font-family:var(--serif);font-weight:700;font-size:24px;line-height:1}
+.card q{display:block;font-size:14px;line-height:1.4;margin-top:8px;quotes:"«" "»"}
+.card .foot{display:contents}
+/* цитаты подобраны одной длины; где ширина колонки всё же даёт разное число строк, место под цитату одно на всех */
+/* на самых узких «Запись к Анастасии» переносится — место под две строки у всех, чтобы ссылки в ряду стояли на одной линии */
+@media (max-width:359px){.card q{min-height:calc(4 * 1.4em)}.card .go{font-size:13px;line-height:1.5;min-height:calc(16px + 3em)}}
+@media (min-width:360px) and (max-width:1023px){.card q{min-height:calc(3 * 1.4em)}}
+@media (min-width:1024px) and (max-width:1279px){.cards .card q{font-size:15px;min-height:calc(3 * 1.4em)}}
+@media (min-width:1280px){.card q{min-height:calc(2 * 1.4em)}}
+.card .at{display:block;font-size:13px;line-height:1.4;color:var(--muted);margin-top:4px}
+.card q.nil{quotes:none;color:var(--muted)}
+.card .src{display:block;font-size:12px;color:var(--muted);margin-top:8px}
+/* вся команда: 16 мастеров из их онлайн-записи; сначала полные ряды — 6 на телефоне (3×2), 8 на компьютере (2×4), остальные по кнопке */
+.cards:not(.all) .card:nth-child(n+7){display:none}
+/* пока стена меняет высоту, ряды ниже её края срезаются; тени рамок по бокам и у нижнего ряда остаются */
+.cards.moving{clip-path:inset(-48px -48px -40px -48px)}
+.card.fade{transition:opacity .3s}
+.card.ghost{opacity:0}
+.card .go{margin-top:auto;font-size:14px;padding:16px 0 0}
+.card:hover .go{color:var(--muted)}
+.masters .more{text-align:center;margin-top:32px}
+
+/* адреса */
+.places{padding-top:var(--sec)}
+.doors{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px;margin-top:32px}
+.door{display:flex;flex-direction:column;align-items:flex-start}
+.door .frame{aspect-ratio:4/5;align-self:stretch}
+.door .links{margin-top:auto;display:flex;flex-wrap:wrap;gap:0 24px}
+.door h3{font-family:var(--serif);font-weight:700;font-size:22px;line-height:1.05;margin-top:16px}
+.door small{display:block;font-size:13px;color:var(--muted);margin-top:4px}
+.door .link{font-size:14px}
+.phone{margin-top:24px;font-size:16px;line-height:1.5}
+/* зоны нажатия от 44 px: поля ссылки больше, отрицательные поля возвращают прежний шаг строк */
+.phone a{font-weight:500;padding:12px 0;margin-block:-4px}
+
+/* почему «Букля» */
+.story{margin-top:var(--sec)}
+.story .wall{padding:var(--band) var(--g)}
+.frames{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:16px;max-width:1100px;margin:0 auto}
+/* стена в истории: кадры 60-х одного формата 4:3, кошка в круге посередине; на телефоне три рамки в ряд */
+.story .wall{container-type:inline-size}
+.frames .frame{height:clamp(64px,calc((100cqw - 24px) / 3.7),96px)}
+.frames img{width:auto;height:100%;aspect-ratio:4/3;object-fit:cover}
+.frames .round{border-radius:50%;aspect-ratio:1}
+.frames .frame:first-child,.frames .frame:last-child{display:none}
+.story .txt{text-align:center;padding-top:48px}
+.story blockquote{font-family:var(--serif);font-weight:500;font-size:24px;line-height:1.3;max-width:720px;margin:16px auto 0}
+.story p{font-size:14px;color:var(--muted);margin-top:16px}
+/* пресса: названия изданий антиквой, их заголовки, год; 2×2 на телефоне, 4 в ряд на компьютере */
+.press-h{font-size:24px;margin-top:64px}
+.press{list-style:none;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:32px 16px;margin:32px auto 0;max-width:1100px;border-top:1px solid var(--line);padding-top:32px}
+.press li{display:flex;flex-direction:column;align-items:center;gap:8px}
+.press b{font-size:18px;line-height:1}
+.press span{font-size:14px;line-height:1.4}
+.press small{font-size:13px;color:var(--muted)}
+@media (max-width:359px){.press b{font-size:15px}}
+
+/* подвал: последняя стена, на ней табличка в той же раме, как у двери салона: знак, адреса, часы, телефон */
+footer{margin-top:var(--sec)}
+.plaque{max-width:560px;margin:0 auto;padding:40px 24px 32px;text-align:center}
+.plaque .mark{display:block;height:48px;width:auto;margin:0 auto 24px}
+.plaque p{font-size:15px;line-height:1.6;margin-top:4px}
+.plaque .link{padding:12px 0;margin-block:-8px}
+.plaque .more{margin-top:16px;padding-top:16px;border-top:1px solid var(--line)}
+.addr span{display:block}
+.addr i{display:none}
+a[href^="tel"]{white-space:nowrap}
+.logo{transition:opacity .4s}
+.logo:hover{opacity:.7}
+header .tel{transition:color .4s,opacity .4s}
+/* один номер на экран: пока на экране телефон адресов или таблички внизу, номер в шапке тает */
+header .tel.off{opacity:0;pointer-events:none}
+header .tel:hover{color:var(--muted)}
+
+/* плашка записи: общая запись в одно касание из любого места; прячется только там, где на экране такая же общая кнопка — двух одинаковых не бывает */
+.float{position:fixed;right:16px;bottom:16px;z-index:9;height:56px;padding:0 24px 0 8px;gap:12px;box-shadow:0 8px 24px rgba(20,20,20,.22);
+  opacity:0;transform:translateY(16px);pointer-events:none;transition:opacity .4s,transform .4s,background-color .4s}
+.float img{width:40px;height:40px;border-radius:50%;background:#fff}
+.float.on{opacity:1;transform:none;pointer-events:auto}
+.book .float{opacity:0;pointer-events:none}
+
+/* окно записи */
+.scrim{position:fixed;inset:0;background:rgba(20,20,20,.45);opacity:0;pointer-events:none;transition:opacity .4s;z-index:10}
+.sheet{position:fixed;left:0;right:0;bottom:0;background:#fff;box-shadow:0 -2px 0 var(--ink);padding:16px var(--g) 24px;transform:translateY(100%);
+  visibility:hidden;transition:transform .4s,visibility 0s .4s;z-index:11}
+.book .scrim{opacity:1;pointer-events:auto}
+html.lock{overflow:hidden}
+.book .sheet{transform:none;visibility:visible;transition:transform .4s,visibility 0s}
+.grip{width:40px;height:4px;border-radius:2px;background:var(--line);margin:0 auto 16px}
+.sheet h2{font-size:32px;padding-right:48px}
+.sheet .lead{font-size:14px;color:var(--muted);margin-top:8px}
+.pick{display:grid;gap:16px;margin-top:24px}
+.place{display:grid;grid-template-columns:88px minmax(0,1fr);gap:16px;align-items:center}
+.place[hidden]{display:none}
+.place .t{display:flex;flex-direction:column;align-items:flex-start;gap:4px}
+.place .frame{aspect-ratio:4/5;transition:box-shadow .4s}
+.place:hover .frame{box-shadow:0 0 0 2px var(--red),0 12px 24px rgba(20,20,20,.12)}
+.place b{font-family:var(--serif);font-weight:700;font-size:20px;line-height:1.05}
+.place small{font-size:13px;color:var(--muted)}
+.place .go{margin-top:4px;font-size:14px;font-weight:500;text-decoration:underline;text-underline-offset:4px;text-decoration-thickness:1px}
+.sheet .tel2{margin-top:24px;font-size:15px}
+.sheet .tel2 a{font-weight:500}
+.x{position:absolute;top:8px;right:8px;width:48px;height:48px;border-radius:50%;display:grid;place-items:center;transition:background-color .4s}
+.x svg{width:20px;height:20px;stroke:currentColor;stroke-width:1.5;fill:none}
+.x:hover{background:#efefef}
+
+/* компьютер */
+@media (min-width:1024px){
+  :root{--g:48px;--head:80px;--stripe:32px;--sec:128px;--band:96px}
+  .logo .c{width:48px;height:48px}
+  .logo .w{height:32px}
+  header .wrap{position:relative}
+  header nav{position:absolute;left:50%;transform:translateX(-50%);display:flex;gap:22px;font-size:16px;margin-right:0}
+  header nav a{padding:12px 5px;transition:color .4s}
+  header nav a:hover{color:var(--muted)}
+  header .right{display:flex;align-items:center;gap:24px}
+  header .tel{display:block;font-size:16px;line-height:20px;padding:12px 0}
+  /* высота первого экрана — от окна: под ним отступ до зала и полоса 96–160 px, где виден верх фото */
+  .hero{--peek:clamp(96px,14dvh,160px);--hero-h:max(420px,calc(100dvh - var(--head) - var(--band) - var(--peek)));
+    display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);height:var(--hero-h)}
+  .hero .wall{display:grid;place-items:center;padding:48px;margin-inline:0}
+  .hero .cat{width:min(100%,calc(var(--hero-h) - 96px),560px);margin:0}
+  .hero .txt{align-self:center;text-align:left;padding:48px clamp(48px,6vw,112px)}
+  .stamp{width:144px;height:144px}
+  .stamp i,.stamp span{font-size:12px}
+  .stamp span{max-width:112px}
+  .stamp b{font-size:48px}
+  .hero .cat .stamp{right:0;bottom:16px}
+  .hero h1{margin-top:0}
+  .hero h1 .spaced{font-size:14px}
+  .hero h1 .serif{font-size:clamp(64px,6.6vw,96px);margin-top:16px;line-height:.92}
+  .hero .sub{font-size:22px;margin-top:24px}
+  .hero .where{font-size:16px;margin-top:8px}
+  .hero .act{justify-content:flex-start;margin-top:40px}
+  .hang{grid-template-columns:repeat(3,minmax(0,1fr));grid-template-rows:repeat(2,minmax(0,1fr));gap:32px}
+  .hang .big{grid-column:1/3;grid-row:1/3}
+  .hang .frame:not(.big){aspect-ratio:auto;position:relative}
+  .hang .frame:not(.big) img{position:absolute;inset:8px;width:calc(100% - 16px);height:calc(100% - 16px)}
+  .hall p{font-size:32px;max-width:800px;margin-top:48px}
+  .day{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr)}
+  .day .txt{align-self:center;padding:48px clamp(48px,6vw,112px)}
+  .day h2{font-size:clamp(48px,5.6vw,80px)}
+  .day .say{font-size:20px}
+  .day .wall{margin-top:0;display:grid;place-items:center;padding:96px 48px;margin-inline:auto 0}
+  .day .pic{width:min(100%,400px)}
+  .day .pic .stamp{right:-24px;top:-24px}
+  .h2{font-size:64px}
+  .pair{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);column-gap:96px;align-items:start}
+  .pair .group{margin-top:0}
+  .pair + .pair{margin-top:64px}
+  .masters .wall{margin-top:48px}
+  .masters .wall .wrap{padding:0 var(--g)}
+  /* мастера — четыре в ряд: 16 человек ложатся полными рядами; сетка страницы 12 колонок: мастера 4 × 3, адреса 3 × 4 */
+  .cards{grid-template-columns:repeat(4,minmax(0,1fr));gap:48px 32px}
+  .cards:not(.all) .card:nth-child(n+7){display:flex}
+  .cards:not(.all) .card:nth-child(n+9){display:none}
+  .card .ph{aspect-ratio:1/1}
+  .card .cap{padding:24px 8px 16px}
+  .card h3{font-size:28px}
+  .card q{font-size:16px}
+  .card .src{font-size:13px}
+  .card .go{font-size:15px}
+  /* адреса — в той же сетке из трёх колонок, что и мастера: заголовок и телефон слева, два входа справа */
+  .places{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));grid-template-rows:auto 1fr;column-gap:32px}
+  .places .h2{grid-column:1;grid-row:1}
+  .places .phone{grid-column:1;grid-row:2;align-self:start;margin-top:32px;font-size:18px}
+  .doors{grid-column:2/4;grid-row:1/3;margin-top:0;gap:32px}
+  .door h3{font-size:28px}
+  .door small{font-size:14px}
+  .door .link{font-size:15px}
+  .frames{gap:32px}
+  .frames{max-width:none}
+  .frames .frame{height:min(168px,calc((100cqw - 112px) / 6.4))}
+  .frames .frame:first-child,.frames .frame:last-child{display:block}
+  .story .txt{padding-top:96px}
+  .story blockquote{font-size:34px}
+  .press-h{font-size:28px;margin-top:96px}
+  .press{grid-template-columns:repeat(4,minmax(0,1fr));gap:32px}
+  .press b{font-size:clamp(20px,1.95vw,28px)}
+  .plaque{max-width:640px;padding:56px 48px 48px}
+  .plaque .mark{height:64px;margin-bottom:32px}
+  .plaque p{font-size:16px}
+  .addr span{display:inline}
+  .addr i{display:inline;font-style:normal}
+  .sheet{left:50%;right:auto;bottom:auto;top:50%;width:560px;padding:32px;box-shadow:0 0 0 2px var(--ink),0 24px 48px rgba(20,20,20,.18);opacity:0;transform:translate(-50%,-46%);
+    transition:transform .4s,opacity .4s,visibility 0s .4s}
+  .book .sheet{transform:translate(-50%,-50%);opacity:1;transition:transform .4s,opacity .4s,visibility 0s}
+  .grip{display:none}
+  .x{top:16px;right:16px}
+}
+
+/* ===== v7 «зал в разрезе» (concept/round-4-whole.md) =====
+   три поверхности из их зала, у каждой своя роль: стена (обои) — где висит; чёрное (их зеркала в рамах и меловая доска у входа) — где решают: цены, адреса;
+   белое (своды) — где читают. Каждый раздел во всю ширину (подогнан под полосы, как стены), стыки — одна чёрная линия 2 px, как рама.
+   Текст на стене — только на табличке в той же раме; на чёрном — белым (цены — на белых досках); на белом — прямо по фону.
+   Мятный пол (их пол) пользователь отверг 21.10: вертикальной полосой читается как больничная стена. */
+:root{--floor:#161616}
+.room{padding-block:var(--band);border-top:2px solid var(--ink)}
+.room.first{border-top:0}
+.story.room{margin-top:0}
+footer.wall{container-type:inline-size}
+.floor{background:var(--floor);margin-inline:auto}
+.story.room{margin-inline:auto}
+.plq{padding:32px 24px}
+/* заголовок на табличке — от ширины таблички (cqw), а не экрана: «ПОНЕДЕЛЬНИК» и «НА ПЯТИ» всегда влезают */
+.hero .txt.plq,.day .txt.plq{container-type:inline-size}
+.day .txt.plq h2{font-size:min(80px,calc(100cqw / 8))}
+.hero .txt.plq h1 .serif{font-size:min(12vw,52px,calc(100cqw / 4.9))}
+@media (min-width:1024px){.hero .txt.plq h1 .serif{font-size:min(96px,calc(100cqw / 4.9))}}
+.plq:is(.txt){display:block}
+/* первый экран, зал и день — одна стена */
+/* на одной стене вещи висят развеской: между первым экраном, залом и днём шаг рамок, а не раздела */
+:root{--hang:32px}
+.wall.room > section + section{margin-top:var(--hang)}
+.wall.room.first{padding-top:24px}
+.hero.wrap{display:block;padding-top:0}
+.hero .cat{margin:0 auto}
+.hero .txt.plq{margin-top:24px;text-align:center;padding:32px 24px}
+.hero .txt.plq .act{margin-top:24px}
+.hall{padding-top:0}
+.hall .cap{margin-top:16px;font-family:var(--serif);font-weight:500;font-size:22px;line-height:1.3;max-width:none}
+.day{margin-top:0;display:block}
+.day .txt.plq{padding:32px 24px}
+.day .pic{margin-top:32px}
+/* мастера: заголовок — табличка на стене */
+.masters.room{margin-top:0}
+.masters .wrap{padding-inline:var(--g)}
+.tag{display:inline-block;padding:12px 24px 10px;margin-bottom:32px}
+.masters .tag{font-size:clamp(28px,8vw,40px)}
+.prices,.places{padding-top:0}
+.story .txt{padding-top:0}
+.story blockquote{margin-top:24px}
+footer.room{margin-top:0}
+footer .frames{margin-bottom:48px}
+@media (max-width:1023px){
+  /* табличка на телефоне: поля 16, чтобы строки скидки дня не переносились */
+  .day .txt.plq,.hero .txt.plq,.hall .cap{padding:24px 16px}
+  .masters .wrap{padding-inline:0}
+  .masters .tag{margin-left:0}
+}
+@media (min-width:1024px){
+  :root{--hang:48px}
+  .room{padding-block:var(--band)}
+  .hero.wrap{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:48px;align-items:center;height:auto;
+    min-height:max(420px,calc(100dvh - var(--head) - var(--hang) - 32px - var(--peek)));padding-block:0}
+  .hero .cat{width:min(100%,calc(100dvh - var(--head) - var(--hang) - 32px - var(--peek) - 48px),520px);justify-self:center}
+  .hero .txt.plq{margin-top:0;text-align:left;padding:48px clamp(40px,4vw,64px);align-self:center}
+  .hero .txt.plq .act{justify-content:flex-start;margin-top:32px}
+  .wall.room.first{padding-top:32px}
+  /* низкие окна компьютера: заголовок первого экрана меньше, чтобы зал выглядывал */
+  @media (max-height:760px){.hero .txt.plq h1 .serif{font-size:min(64px,calc(100cqw / 4.9))}.hero .txt.plq{padding-block:40px}}
+  .hall .cap{font-size:28px;max-width:760px;margin-top:32px}
+  .day{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:48px;align-items:center}
+  .day .txt.plq{padding:48px clamp(40px,4vw,64px)}
+  .day .pic{margin-top:0;width:min(100%,400px);justify-self:center}
+  .masters .tag{font-size:56px;padding:16px 32px 14px;margin-bottom:48px}
+  .story .txt{max-width:1100px}
+}
+
+/* прайс v7: доски на полу. Пары одной длины (6|6, 4|4) — пустых мест нет; у строки одна высота; буквы крупнее, цена весомее */
+.prices .groups{display:grid;gap:24px;margin-top:32px}
+.prices .pair{display:grid;gap:24px}
+.prices .group.board{margin-top:0;padding:24px 20px 16px}
+.prices .gh{margin-bottom:4px}
+.prices .gh h3{font-size:28px}
+.prices .gh p{font-size:14px;margin-top:6px}
+.prices .row{min-height:60px;padding-top:12px}
+.prices .row .n{font-size:17px}
+.prices .row .p{font-size:18px}
+.prices .row small{font-size:13px}
+.prices .note{margin-top:24px;max-width:72ch;font-size:14px;color:var(--ink-2)}
+/* телефон: на доске название в одну строку — поля 16, кегль 16 (длинное уже унесено в пояснение) */
+@media (max-width:1023px){.prices .group.board{padding:20px 16px 12px}.prices .gh h3{font-size:24px}.prices .gh p{font-size:13px}.prices .row .n,.prices .row .p{font-size:16px}.prices .row{column-gap:6px}}
+@media (max-width:359px){.prices .group.board{padding:20px 14px 12px}.prices .gh h3{font-size:22px}.prices .row .n{font-size:15px}.prices .row .p{font-size:15px}.prices .row small{font-size:12px}}
+@media (min-width:1024px){
+  .prices .groups{gap:32px;margin-top:48px}
+  .prices .pair{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:32px;align-items:stretch}
+  .prices .pair + .pair{margin-top:0}
+  .prices .group.board{padding:32px 32px 24px}
+  .prices .gh h3{font-size:clamp(28px,2.2vw,32px)}
+  .prices .row{min-height:64px}
+}
+
+/* чёрное: заголовки и текст белым, второстепенное — светло-серым (контраст ≥ 7:1), доски с ценами — свои, чёрным по белому */
+.floor{color:#fff}
+.floor .h2,.floor .phone,.floor .door h3,.floor .door .link,.floor .phone .link{color:#fff}
+.floor .note{color:#c9c9c9}
+.floor .door small{color:#bdbdbd}
+.floor .link:hover{color:#bdbdbd}
+.floor .board{color:var(--ink)}
+.floor .board small{color:var(--muted)}
+
+/* прайс v7б: вкладки на чёрном + одна белая доска. Без скрипта видны все разделы подряд */
+/* телефон: вкладки сеткой 2×2 одной ширины; компьютер — в строку */
+.tabs{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8px;margin-top:32px}
+.tab{height:44px;padding:0 12px;border-radius:999px;box-shadow:inset 0 0 0 1px #fff;color:#fff;font:500 15px/1 var(--sans);white-space:nowrap;transition:background-color .4s,color .4s}
+.tab:hover{background:rgba(255,255,255,.14)}
+.tab[aria-selected="true"]{background:#fff;color:var(--ink)}
+.tab .t20{font-style:normal;margin-left:4px;font-size:.87em;color:#e3937d}
+@media (max-width:1023px){.tab{font-size:14px}}
+.tab[aria-selected="true"] .t20{color:var(--red)}
+.prices .board{margin-top:16px;padding:20px 16px 16px;color:var(--ink)}
+.prices .board.moving{overflow:hidden}
+.js-tabs .panel:not(.on){display:none}
+.panel{transition:opacity .25s}
+.panel.ghost{opacity:0}
+.panel + .panel{margin-top:32px}
+.js-tabs .panel + .panel{margin-top:0}
+.lead-d{font-size:14px;padding-bottom:12px;border-bottom:2px solid var(--ink)}
+.panel .note{margin-top:16px;color:var(--muted);font-size:13px}
+/* 320–359: поля доски 12, кегль 14 — названия в одну строку; пояснения 11 px — при 12 длинные переносятся и строки прайса разной высоты (_prices.mjs, 22.10) */
+@media (max-width:359px){.prices .board{padding:16px 12px 12px}.prices .board .row .n,.prices .board .row .p{font-size:14px}.prices .board .row small{font-size:11px}.lead-d{font-size:12px}.tab{padding:0 14px;font-size:14px}}
+@media (min-width:1024px){
+  .tabs{display:flex;flex-wrap:wrap;margin-top:48px;gap:12px}
+  .tab{height:48px;padding:0 24px;font-size:16px}
+  .prices .board{margin-top:24px;padding:40px 48px 32px}
+  .rows{columns:2;column-gap:64px}
+  .rows .row{break-inside:avoid}
+  .lead-d{font-size:15px}
+}
+
+/* полировка 22.10 */
+/* 1. фокус с клавиатуры на чёрном — белая рамка (чёрная на чёрном не видна) */
+.floor :focus-visible{outline-color:#fff}
+/* 2. плашка записи над чёрным разделом становится белой, иначе чёрная на чёрном пропадает */
+.float{transition:opacity .4s,transform .4s,background-color .4s,color .4s}
+.float.on-dark{background:#fff;color:var(--ink);box-shadow:0 8px 24px rgba(0,0,0,.45)}
+.float.on-dark:hover{background:#e9e9e9}
+/* 3. на телефоне фото дня во всю ширину, как все рамки на стене; штамп внутри стены */
+@media (max-width:1023px){.day .pic{width:auto;margin-inline:0}.day .pic .stamp{right:8px;top:-16px}}
+/* 4. на компьютере день и подпись зала — на той же сетке, что фото зала: табличка = большое фото, фото дня = колонка малых */
+@media (min-width:1024px){
+  .hall .cap{width:calc((100% - 64px) / 3 * 2 + 32px);max-width:none}
+  .day{grid-template-columns:repeat(3,minmax(0,1fr));gap:32px;align-items:stretch}
+  .day .txt.plq{grid-column:1/3}
+  .day .pic{grid-column:3}
+  .day .txt.plq{display:flex;flex-direction:column;justify-content:center;align-self:stretch}
+  /* табличка и фото дня — одной высоты: ряд берёт большее из двух, второе тянется (фото кадрируется, не сплющивается) */
+  .day .pic{width:auto;justify-self:stretch;align-self:stretch}
+  .day .pic{container-type:inline-size;margin:0}
+  .day .photo{height:100%;aspect-ratio:auto;min-height:calc(100cqw * 1.25)}
+}
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <a class="logo" href="#top" aria-label="Букля, на главную"><img class="c" src="img/logo-cat-120.png" alt=""><img class="w" src="img/logo-word.svg" alt="Букля"></a>
+    <nav><a href="#prices">Цены</a><a href="#masters">Мастера</a><a href="#places">Адреса</a></nav>
+    <div class="right"><a class="tel" href="tel:+78129889595">+7 (812) 988-95-95</a></div>
+  </div>
+</header>
+
+<!-- v7 «зал в разрезе»: стена (висит) → пол (цены) → стена (мастера) → пол (адреса) → белое (читают) → стена (концовка) -->
+<div class="wall stripes room first">
+<section class="hero wrap" id="top">
+  <div class="cat">
+    <img src="img/logo-cat.webp" alt="Кошка Букля с начёсом, логотип парикмахерской">
+    <a class="stamp" href="#day" data-stamp="hero"><i>По средам</i><b>−20%</b><span>яркая среда</span></a>
+  </div>
+  <div class="txt frame plq">
+    <h1><span class="spaced">Ретро-парикмахерская</span><span class="serif">на Пяти углах</span></h1>
+    <p class="sub">Стрижём и красим каждый день с&nbsp;2012&nbsp;года!</p>
+    <p class="where">Ежедневно с 10:00 до 22:00<br>Рубинштейна, 40 · Ломоносова, 26</p>
+    <div class="act"><a class="btn btn-ink" href="#book" data-book data-generic>Запись в Буклю</a><a class="link" href="#prices">Все цены</a></div>
+  </div>
+</section>
+
+<section class="hall wrap">
+  <div class="hang">
+    <div class="frame big"><img loading="lazy" src="img/hall.jpg" alt="Зал Букли на Рубинштейна: своды, чёрные зеркала, мятный пол"></div>
+    <div class="frame"><img loading="lazy" src="img/hall-wall.jpg" alt="Стена у стойки: часы, овальное зеркало, портреты в рамах"></div>
+    <div class="frame"><img loading="lazy" src="img/hall-corner.jpg" alt="Угол со шкафом и зеркалом в лампочках на полосатых обоях"></div>
+  </div>
+  <p class="cap frame plq">Маленькая местная сеть <span class="nw">ретро-парикмахерских</span>, очень популярная среди горожан и интуристов.</p>
+</section>
+
+<section class="day wrap" id="day">
+  <div class="txt frame plq">
+    <h2 class="serif" data-dayname>Яркая среда</h2>
+    <p class="say" data-say>Не забываем, что каждую среду мы красим волосы со скидкой <span class="red">20%</span>.</p>
+    <div class="deal" data-deal>
+      <div class="row"><span class="n">Женское, простое</span><i class="dots"></i><span class="p"><s>2 990</s> <b class="red">2 392 ₽</b></span></div>
+      <div class="row"><span class="n">Женское, сложное</span><i class="dots"></i><span class="p"><s>3 990</s> <b class="red">3 192 ₽</b></span></div>
+      <div class="row"><span class="n">Мужское, простое</span><i class="dots"></i><span class="p"><s>1 190</s> <b class="red">952 ₽</b></span></div>
+    </div>
+    <div class="act"><a class="btn btn-ink" href="#book" data-book data-generic>Запись в Буклю</a><a class="link" href="#prices">Все цены</a></div>
+  </div>
+  <div class="pic">
+    <div class="frame photo"><img data-dayphoto src="img/day-wed.jpg" alt="Яркая среда"></div>
+    <span class="stamp" data-stamp="day"><i>По средам</i><b>−20%</b><span>окрашивание</span></span>
+  </div>
+</section>
+</div>
+
+<div class="floor room fit">
+<section class="prices wrap" id="prices">
+  <h2 class="serif h2">Цены на услуги</h2>
+  <!-- одна доска и вкладки: сколько бы услуг ни добавили, пар и дыр нет — доска просто плавно меняет высоту;
+       строки внутри на компьютере в две колонки (CSS columns: разница не больше строки); открывается на сегодняшней скидке -->
+  <div class="tabs" role="tablist" aria-label="Разделы прайса">
+    <button class="tab" type="button" role="tab" id="t-w" aria-controls="p-w" data-days="2,5,6">Женские стрижки</button>
+    <button class="tab" type="button" role="tab" id="t-c" aria-controls="p-c" data-days="3">Окрашивание</button>
+    <button class="tab" type="button" role="tab" id="t-m" aria-controls="p-m" data-days="1">Мужские стрижки</button>
+    <button class="tab" type="button" role="tab" id="t-u" aria-controls="p-u" data-days="0">Уход</button>
+  </div>
+  <div class="board frame" data-board>
+    <div class="panel" role="tabpanel" id="p-w" aria-labelledby="t-w"><p class="red lead-d">по вторникам, пятницам и субботам −20%</p>
+      <div class="rows">
+        <div class="row" data-d="5"><span class="n">Стрижка, волосы до плеч</span><i class="dots"></i><span class="p">2 190 ₽</span><small>около 60 минут · <span class="red"><span class="today-tag">сегодня: </span>Короткая пятница −20%</span></small></div>
+        <div class="row" data-d="2"><span class="n">Стрижка, волосы ниже плеч</span><i class="dots"></i><span class="p">2 490 ₽</span><small>около 75 минут · <span class="red"><span class="today-tag">сегодня: </span>Длинный вторник −20%</span></small></div>
+        <div class="row"><span class="n">Детская, до 10 лет</span><i class="dots"></i><span class="p">1 590 ₽</span><small>около 60 минут</small></div>
+        <div class="row"><span class="n">Стрижка чёлки</span><i class="dots"></i><span class="p">790 ₽</span><small>около 30 минут</small></div>
+        <div class="row"><span class="n">Укладка дневная</span><i class="dots"></i><span class="p">1 690 ₽</span><small>около 60 минут</small></div>
+        <div class="row" data-d="6"><span class="n">Укладка вечерняя</span><i class="dots"></i><span class="p">2 190 ₽</span><small>около 90 минут · <span class="red"><span class="today-tag">сегодня: </span>по субботам −20%</span></small></div>
+      </div>
+    </div>
+    <div class="panel" role="tabpanel" id="p-c" aria-labelledby="t-c" data-d="3"><p class="red lead-d"><span class="today-tag">сегодня: </span>Яркая среда −20%, и на материалы</p>
+      <div class="rows">
+        <div class="row"><span class="n">Женское, простое</span><i class="dots"></i><span class="p">2 990 ₽</span><small>в один тон, тонирование, корни, седина</small></div>
+        <div class="row"><span class="n">Женское, сложное</span><i class="dots"></i><span class="p">3 990 ₽</span><small>осветление натуральных волос и тонирование</small></div>
+        <div class="row"><span class="n">Женское, суперсложное</span><i class="dots"></i><span class="p">6 990 ₽</span><small>мелирование: шатуш, балаяж, омбре, AirTouch</small></div>
+        <div class="row"><span class="n">«Выход из чёрного»</span><i class="dots"></i><span class="p">7 990 ₽</span><small></small></div>
+        <div class="row"><span class="n">Мужское, простое</span><i class="dots"></i><span class="p">1 190 ₽</span><small>−20% и по понедельникам</small></div>
+        <div class="row"><span class="n">Мужское, сложное</span><i class="dots"></i><span class="p">3 290 ₽</span><small>с обесцвечиванием · −20% и по понедельникам</small></div>
+      </div><p class="note">Материалы считаются отдельно, точную сумму подскажет мастер на&nbsp;консультации перед окрашиванием. С&nbsp;материалами примерно: простое 4&nbsp;000–6&nbsp;000&nbsp;₽, сложное 7&nbsp;000–10&nbsp;000&nbsp;₽, суперсложное от&nbsp;9&nbsp;000&nbsp;₽.</p>
+    </div>
+    <div class="panel" role="tabpanel" id="p-m" aria-labelledby="t-m" data-d="1"><p class="red lead-d"><span class="today-tag">сегодня: </span>Мужской понедельник −20%</p>
+      <div class="rows">
+        <div class="row"><span class="n">Ножницами и машинкой</span><i class="dots"></i><span class="p">1 990 ₽</span><small>мытьё, стрижка, укладка · около 60 минут</small></div>
+        <div class="row"><span class="n">Машинкой, 1–2 насадки</span><i class="dots"></i><span class="p">1 290 ₽</span><small>без переходов · около 30 минут</small></div>
+        <div class="row"><span class="n">Детская, до 10 лет</span><i class="dots"></i><span class="p">1 590 ₽</span><small>около 60 минут</small></div>
+        <div class="row"><span class="n">Усы и борода</span><i class="dots"></i><span class="p">590 ₽</span><small>около 30 минут</small></div>
+      </div>
+    </div>
+    <div class="panel" role="tabpanel" id="p-u" aria-labelledby="t-u" data-d="0"><p class="red lead-d"><span class="today-tag">сегодня: </span>по воскресеньям −20%</p>
+      <div class="rows">
+        <div class="row"><span class="n">«Блеск и восстановление»</span><i class="dots"></i><span class="p">1 990 ₽</span><small>до плеча · около 75 минут</small></div>
+        <div class="row"><span class="n">«Блеск и восстановление»</span><i class="dots"></i><span class="p">2 190 ₽</span><small>ниже плеча · около 90 минут</small></div>
+        <div class="row"><span class="n">«Молекулярный ремонт»</span><i class="dots"></i><span class="p">3 290 ₽</span><small>L'Oréal · до плеча</small></div>
+        <div class="row"><span class="n">«Молекулярный ремонт»</span><i class="dots"></i><span class="p">3 690 ₽</span><small>L'Oréal · ниже плеча</small></div>
+      </div>
+    </div>
+  </div>
+</section>
+</div>
+
+<section class="masters wall stripes room" id="masters"><div class="wrap">
+  <h2 class="serif h2 tag frame">Золотые руки</h2>
+  <div class="cards">
+      <a class="card" href="#book" data-book data-to="к Варваре" data-of="Варвары" data-m="7532:548134"><span class="ph"><img loading="lazy" src="img/m-varvara.jpg?v=4" alt=""></span><span class="cap"><h3>Варвара</h3><small class="at">Рубинштейна</small><q>Помнит пожелания прошлой встречи</q><span class="foot"><span class="src">Отзыв, июнь 2026</span><span class="go link">Запись к Варваре</span></span></span></a>
+      <a class="card" href="#book" data-book data-to="к Ирине" data-of="Ирины" data-m="7533:178003"><span class="ph"><img loading="lazy" src="img/m-irina.jpg?v=4" alt=""></span><span class="cap"><h3>Ирина</h3><small class="at">Ломоносова</small><q>Приезжаю специально к Ирине из Москвы</q><span class="foot"><span class="src">Отзыв, август 2026</span><span class="go link">Запись к Ирине</span></span></span></a>
+      <a class="card" href="#book" data-book data-to="к Артёму" data-of="Артёма" data-m="7532:1163851"><span class="ph"><img loading="lazy" src="img/m-artem.jpg?v=4" alt=""></span><span class="cap"><h3>Артём</h3><small class="at">Рубинштейна</small><q>Сделал ещё лучше, чем планировалось</q><span class="foot"><span class="src">Отзыв, август 2026</span><span class="go link">Запись к Артёму</span></span></span></a>
+      <a class="card" href="#book" data-book data-to="к Евгении" data-of="Евгении" data-m="7533:784159"><span class="ph"><img loading="lazy" src="img/m-evgenia.jpg?v=4" alt=""></span><span class="cap"><h3>Евгения</h3><small class="at">Ломоносова</small><q>Работает с душой, тщательно</q><span class="foot"><span class="src">Отзыв, июль 2026</span><span class="go link">Запись к Евгении</span></span></span></a>
+      <a class="card" href="#book" data-book data-to="к Маше" data-of="Маши" data-m="7532:596681"><span class="ph"><img loading="lazy" src="img/m-masha.jpg?v=4" alt=""></span><span class="cap"><h3>Маша</h3><small class="at">Рубинштейна</small><q>Любимый мастер — с первого визита</q><span class="foot"><span class="src">Отзыв, март 2026</span><span class="go link">Запись к Маше</span></span></span></a>
+      <a class="card" href="#book" data-book data-to="к Антонине" data-of="Антонины" data-m="7533:748177"><span class="ph"><img loading="lazy" src="img/m-antonina.jpg?v=4" alt=""></span><span class="cap"><h3>Антонина</h3><small class="at">Ломоносова</small><q>Волосы абсолютно не травмированы</q><span class="foot"><span class="src">Отзыв, май 2026</span><span class="go link">Запись к Антонине</span></span></span></a>
+      <a class="card" href="#book" data-book data-to="к Диме" data-of="Димы" data-m="7532:1129858,7533:1129852"><span class="ph"><img loading="lazy" src="img/m-dima.jpg?v=4" alt=""></span><span class="cap"><h3>Дима</h3><small class="at">Оба салона</small><q>Талантливый, творческий, смелый</q><span class="foot"><span class="src">Отзыв, октябрь 2026</span><span class="go link">Запись к Диме</span></span></span></a>
+      <a class="card" href="#book" data-book data-to="к Насте П." data-of="Насти П." data-m="7532:834531"><span class="ph"><img loading="lazy" src="img/m-nastya.jpg?v=4" alt=""></span><span class="cap"><h3>Настя П.</h3><small class="at">Рубинштейна</small><q>Прекрасно понимает запросы клиента</q><span class="foot"><span class="src">Отзыв, июнь 2026</span><span class="go link">Запись к Насте П.</span></span></span></a>
+      <a class="card" href="#book" data-book data-to="к Анастасии" data-of="Анастасии" data-m="7532:175772"><span class="ph"><img loading="lazy" src="img/m-anastasia.jpg?v=4" alt=""></span><span class="cap"><h3>Анастасия</h3><small class="at">Рубинштейна</small><q>Лучшая моя стрижка за 78 лет</q><span class="foot"><span class="src">Отзыв, февраль 2026</span><span class="go link">Запись к Анастасии</span></span></span></a>
+      <a class="card" href="#book" data-book data-to="к Наталье" data-of="Натальи" data-m="7533:1062749"><span class="ph"><img loading="lazy" src="img/m-natalya.jpg?v=4" alt=""></span><span class="cap"><h3>Наталья</h3><small class="at">Ломоносова</small><q>Слушает и слышит пожелания</q><span class="foot"><span class="src">Отзыв, август 2026</span><span class="go link">Запись к Наталье</span></span></span></a>
+      <a class="card" href="#book" data-book data-to="к Юлии" data-of="Юлии" data-m="7532:400617,7533:400560"><span class="ph"><img loading="lazy" src="img/m-yulia.jpg?v=4" alt=""></span><span class="cap"><h3>Юлия</h3><small class="at">Оба салона</small><q>Сделала мне отличную чёлку и стрижку</q><span class="foot"><span class="src">Отзыв, апрель 2026</span><span class="go link">Запись к Юлии</span></span></span></a>
+      <a class="card" href="#book" data-book data-to="к Кристине" data-of="Кристины" data-m="7533:1129870"><span class="ph"><img loading="lazy" src="img/m-kristina.jpg?v=4" alt=""></span><span class="cap"><h3>Кристина</h3><small class="at">Ломоносова</small><q>Хороший мастер и собеседник</q><span class="foot"><span class="src">Отзыв, сентябрь 2026</span><span class="go link">Запись к Кристине</span></span></span></a>
+      <a class="card" href="#book" data-book data-to="к Анне" data-of="Анны" data-m="7532:1007181"><span class="ph"><img loading="lazy" src="img/m-anna.jpg?v=4" alt=""></span><span class="cap"><h3>Анна</h3><small class="at">Рубинштейна</small><q>Профессионал самой высокой пробы</q><span class="foot"><span class="src">Отзыв, январь 2026</span><span class="go link">Запись к Анне</span></span></span></a>
+      <a class="card" href="#book" data-book data-to="к Оксане" data-of="Оксаны" data-m="7533:1047103"><span class="ph"><img loading="lazy" src="img/m-oksana.jpg?v=4" alt=""></span><span class="cap"><h3>Оксана</h3><small class="at">Ломоносова</small><q>Эта прекрасная фея спасла мои волосы</q><span class="foot"><span class="src">Отзыв, апрель 2026</span><span class="go link">Запись к Оксане</span></span></span></a>
+      <a class="card" href="#book" data-book data-to="к Ире" data-of="Иры" data-m="7532:1170394,7533:1170388"><span class="ph"><img loading="lazy" src="img/m-ira.jpg?v=4" alt=""></span><span class="cap"><h3>Ира</h3><small class="at">Оба салона</small><q>Сделала стрижку, как я просила</q><span class="foot"><span class="src">Отзыв, август 2026</span><span class="go link">Запись к Ире</span></span></span></a>
+      <a class="card" href="#book" data-book data-to="к Оле" data-of="Оли" data-m="7532:1177994"><span class="ph"><img loading="lazy" src="img/m-olya.jpg?v=4" alt=""></span><span class="cap"><h3>Оля</h3><small class="at">Рубинштейна</small><q class="nil">Отзывов пока нет</q><span class="foot"><span class="src">&nbsp;</span><span class="go link">Запись к Оле</span></span></span></a>
+    </div>
+  <div class="more"><button class="btn btn-line" type="button" data-all>Вся команда</button></div>
+  </div>
+</div></section>
+
+<div class="floor room fit">
+<section class="places wrap" id="places">
+  <h2 class="serif h2">Адреса Букли</h2>
+  <div class="doors">
+    <div class="door"><div class="frame"><img loading="lazy" src="img/door-rub.jpg" alt="Вход в салон на Рубинштейна"></div><h3>Ул. Рубинштейна, д. 40</h3><small>Дверь рядом с окном, где кошка</small><span class="links"><a class="link" href="https://widget.sonline.su/ru/services/?groupid=228&amp;placeid=7532" target="_blank" rel="noopener">Онлайн-запись<svg class="ext" viewBox="0 0 12 12" aria-hidden="true"><path d="M3.5 8.5l5-5M4.5 3.5h4v4"/></svg></a><a class="link" href="https://yandex.ru/maps/org/buklya/38995633184/" target="_blank" rel="noopener">Посмотреть на карте</a></span></div>
+    <div class="door"><div class="frame"><img loading="lazy" src="img/door-lom.jpg" alt="Вход в салон на Ломоносова"></div><h3>Ул. Ломоносова, д. 26</h3><small>Вход под полосатыми навесами</small><span class="links"><a class="link" href="https://widget.sonline.su/ru/services/?groupid=228&amp;placeid=7533" target="_blank" rel="noopener">Онлайн-запись<svg class="ext" viewBox="0 0 12 12" aria-hidden="true"><path d="M3.5 8.5l5-5M4.5 3.5h4v4"/></svg></a><a class="link" href="https://yandex.ru/maps/org/buklya/1161304031/" target="_blank" rel="noopener">Посмотреть на карте</a></span></div>
+  </div>
+  <p class="phone">Единый телефон для записи<br><a class="link" href="tel:+78129889595">+7 (812) 988-95-95</a><br>Ежедневно с 10:00 до 22:00</p>
+</section>
+</div>
+
+<section class="story room fit"><div class="wrap txt">
+  <h2 class="serif h2">Почему «Букля»</h2>
+    <blockquote>«Маленькая киса была очень похожа на сову (из знаменитой эпопеи о Гарри Поттере), а ещё на булку с корицей. Выбирая между именами „Булочка“ и „Букля“, остановились на втором».</blockquote>
+    <p>А ещё boukle в переводе с французского означает «кудряшка, кудрявый локон, завиток».</p>
+    <!-- пресса от новых к старым -->
+    <h3 class="press-h serif">Пресса о «Букле»</h3>
+    <ul class="press">
+      <li><b class="serif">Shopping года</b><span>«Лучший салон красоты 2023 в <span class="nw">Санкт-Петербурге»</span></span><small>2023</small></li>
+      <li><b class="serif">Glamour</b><span>Елена Крыгина о «Букле»</span><small>2016</small></li>
+      <li><b class="serif">Allure</b><span>«12 лучших новых салонов красоты»</span><small>2013</small></li>
+      <li><b class="serif">The Village</b><span>«Новое место: парикмахерская „Букля“»</span><small>2013</small></li>
+    </ul>
+</div></section>
+
+<footer class="wall stripes room">
+  <div class="frames">
+      <span class="frame"><img loading="lazy" src="img/wall-60s-003.jpg" alt=""></span>
+      <span class="frame"><img loading="lazy" src="img/wall-60s-005.jpg" alt=""></span>
+      <span class="frame"><img src="img/logo-cat.webp" alt="" class="round"></span>
+      <span class="frame"><img loading="lazy" src="img/wall-60s-007.jpg" alt=""></span>
+      <span class="frame"><img loading="lazy" src="img/wall-60s-009.jpg" alt=""></span>
+    </div>
+  <div class="plaque frame">
+      <img class="mark" src="img/logo-full.svg" alt="Парикмахерская Букля">
+      <p class="addr"><span>Ул. Рубинштейна, д. 40</span><i> · </i><span>Ул. Ломоносова, д. 26</span></p>
+      <p>Ежедневно с 10:00 до 22:00</p>
+      <p><a class="link" href="tel:+78129889595">+7 (812) 988-95-95</a> · <a class="link" href="https://vk.ru/buklya_me">ВКонтакте</a></p>
+      <p class="more"><a class="link" href="mailto:rabota@kulturra.ru">Работа в Букле</a></p>
+    </div>
+</footer>
+
+<a class="float btn btn-ink" href="#book" data-book data-float tabindex="-1" aria-hidden="true"><img src="img/logo-cat-120.png" alt="">Запись в Буклю</a>
+<div class="scrim" data-close></div>
+<div class="sheet" role="dialog" aria-modal="true" aria-labelledby="sheet-h">
+  <div class="grip"></div>
+  <button class="x" type="button" data-close aria-label="Закрыть"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 4l12 12M16 4L4 16"/></svg></button>
+  <h2 class="serif" id="sheet-h" data-sheet-h>Запись в Буклю</h2>
+  <p class="lead" data-lead>Выберите салон. Дальше в онлайн-записи: услуга, мастер и время.</p>
+  <div class="pick">
+    <a class="place" data-place="7532" href="https://widget.sonline.su/ru/services/?groupid=228&amp;placeid=7532" target="_blank" rel="noopener"><span class="frame"><img src="img/door-rub.jpg" alt=""></span><span class="t"><b>Рубинштейна, 40</b><small>Дверь рядом с окном, где кошка</small><span class="go">Онлайн-запись<svg class="ext" viewBox="0 0 12 12" aria-hidden="true"><path d="M3.5 8.5l5-5M4.5 3.5h4v4"/></svg></span></span></a>
+    <a class="place" data-place="7533" href="https://widget.sonline.su/ru/services/?groupid=228&amp;placeid=7533" target="_blank" rel="noopener"><span class="frame"><img src="img/door-lom.jpg" alt=""></span><span class="t"><b>Ломоносова, 26</b><small>Вход под полосатыми навесами</small><span class="go">Онлайн-запись<svg class="ext" viewBox="0 0 12 12" aria-hidden="true"><path d="M3.5 8.5l5-5M4.5 3.5h4v4"/></svg></span></span></a>
+  </div>
+  <p class="tel2">Или по телефону: <a class="link" href="tel:+78129889595">+7 (812) 988-95-95</a></p>
+</div>
+
+<script>
+// Дни −20% — их прайс и посты. Названия: Мужской понедельник и Короткая пятница (Яндекс), Длинный вторник и Яркая среда (ВК).
+// Фразы — их: вторник и среда из постов ВК, остальные — строки «Каждый … скидка» с их страниц цен. В четверг скидки нет — показываем завтра.
+// Штамп на первом экране — имя дня (short), штамп в блоке дня — на что скидка (what): имя дня там уже в заголовке, второй раз не пишем.
+const DAYS = {
+  1: { name: 'Мужской понедельник', short: 'мужские услуги', what: 'мужские услуги', say: 'Каждый понедельник действует скидка −20% на все виды услуг для мужчин, включая мужское окрашивание.', on: 'понедельник', photo: 'img/day-mon.jpg', deal: [['Стрижка ножницами и машинкой', 1990], ['Стрижка машинкой, 1–2 насадки', 1290], ['Усы и борода', 590]] },
+  2: { name: 'Длинный вторник', short: 'длинный вторник', what: 'длинные волосы', say: 'Длинные волосы — длинные скидки! Каждый вторник дарим скидку 20% на любую стрижку длинных волос.', on: 'вторник', photo: 'img/day-tue.jpg', deal: [['Стрижка, волосы ниже плеч', 2490]] },
+  3: { name: 'Яркая среда', short: 'яркая среда', what: 'окрашивание', say: 'Не забываем, что каждую среду мы красим волосы со скидкой 20%.', on: 'среду', photo: 'img/day-wed.jpg', deal: [['Женское, простое', 2990], ['Женское, сложное', 3990], ['Мужское, простое', 1190]] },
+  5: { name: 'Короткая пятница', short: 'короткая пятница', what: 'стрижка до плеч', say: 'Каждую пятницу скидка 20% на женскую стрижку до плеч.', on: 'пятницу', photo: 'img/day-fri.jpg', deal: [['Стрижка, волосы до плеч', 2190]] },
+  6: { name: 'Суббота', short: 'вечерняя укладка', what: 'вечерняя укладка', say: 'Каждую субботу скидка 20% на вечернюю укладку: локоны и кудри.', on: 'субботу', photo: 'img/day-sat.jpg', deal: [['Укладка вечерняя', 2190]] },
+  0: { name: 'Воскресенье', short: 'уход для волос', what: 'уход для волос', say: 'Каждое воскресенье действует скидка −20% на уход для волос.', on: 'воскресенье', photo: 'img/day-sun.jpg', deal: [['«Блеск и восстановление», до плеча', 1990], ['«Молекулярный ремонт», до плеча', 3290]] },
+};
+const q = new URLSearchParams(location.search);
+let d = q.has('day') ? +q.get('day') : new Date().getDay();
+let when = 'Сегодня';
+if (!DAYS[d]) { d = (d + 1) % 7; when = 'Завтра'; }
+const x = DAYS[d];
+// неразрывный пробел после коротких предлогов и союзов, как в остальном тексте страницы
+const nb = t => t.replace(/(^|[\s(«])(в|во|к|ко|с|со|у|о|об|и|а|но|на|по|за|из|от|до|не|ни|для) /gi, '$1$2 ').replace(/ —/g, ' —');
+document.querySelectorAll('[data-stamp]').forEach(st => {
+  st.innerHTML = `<i>${when}</i><b>−20%</b><span>${nb(st.dataset.stamp === 'day' ? x.what : x.short)}</span>`;
+  st.setAttribute('aria-label', `${when}: ${x.name}, −20%`);
+});
+document.querySelector('[data-dayname]').textContent = x.name;
+document.querySelector('[data-say]').innerHTML = nb(x.say).replace(/(−?20%)/, '<span class="red">$1</span>');
+const ph = document.querySelector('[data-dayphoto]');
+ph.src = x.photo; ph.alt = x.name;
+// строки скидки дня: старая цена и цена со скидкой −20%, как на их страницах цен
+const rub = n => n.toLocaleString('ru-RU');
+document.querySelector('[data-deal]').innerHTML = x.deal.map(([n, p]) =>
+  `<div class="row"><span class="n">${nb(n)}</span><i class="dots"></i><span class="p"><s>${rub(p)}</s> <b class="red">${rub(Math.round(p * 0.8))} ₽</b></span></div>`).join('');
+if (when === 'Сегодня') document.querySelectorAll('[data-d]').forEach(g => { if (+g.dataset.d === d) g.classList.add('now'); });
+// Прайс: вкладки. Открыта сегодняшняя скидка (в четверг — завтрашняя), у её вкладки красное «−20%». Смена — доска плавно меняет высоту.
+(() => {
+  const tabs = [...document.querySelectorAll('.tab')], board = document.querySelector('[data-board]');
+  if (!tabs.length) return;
+  document.documentElement.classList.add('js-tabs');
+  const panel = t => document.getElementById(t.getAttribute('aria-controls'));
+  let raf = 0;
+  const pick = (t, animate) => {
+    const h0 = board.getBoundingClientRect().height;
+    tabs.forEach(x => { const on = x === t; x.setAttribute('aria-selected', on); x.tabIndex = on ? 0 : -1; panel(x).classList.toggle('on', on); });
+    if (!animate || matchMedia('(prefers-reduced-motion:reduce)').matches) return;
+    cancelAnimationFrame(raf); board.style.height = ''; const h1 = board.getBoundingClientRect().height;
+    const pn = panel(t); pn.classList.add('ghost'); requestAnimationFrame(() => requestAnimationFrame(() => pn.classList.remove('ghost')));
+    board.classList.add('moving'); const t0 = performance.now(), dur = 380;
+    const step = now => { const k = 1 - Math.pow(1 - Math.min(1, (now - t0) / dur), 4); board.style.height = h0 + (h1 - h0) * k + 'px';
+      if (k < 1) raf = requestAnimationFrame(step); else { board.style.height = ''; board.classList.remove('moving'); } };
+    board.style.height = h0 + 'px'; raf = requestAnimationFrame(step);
+  };
+  const hit = tabs.find(t => t.dataset.days.split(',').map(Number).includes(d));
+  if (hit) hit.insertAdjacentHTML('beforeend', '<i class="t20">−20%</i>');
+  pick(hit || tabs[0], false);
+  tabs.forEach((t, i) => {
+    t.addEventListener('click', () => pick(t, true));
+    t.addEventListener('keydown', e => { const k = { ArrowRight: 1, ArrowLeft: -1 }[e.key]; if (!k) return; const n = tabs[(i + k + tabs.length) % tabs.length]; n.focus(); pick(n, true); });
+  });
+})();
+
+
+// Обои: полосы постоянной ширины, под них подгоняется стена — нечётное число полос, серая полоса с обоих краёв.
+// Стена у края экрана (первый экран и день на компьютере) прижата к краю, остаток уходит к тексту.
+// Стена по центру: белое поле по бокам либо 0, либо не уже порога — тонких щелей у края экрана не бывает.
+const fitWalls = () => {
+  const s = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--stripe'));
+  const desk = matchMedia('(min-width:1024px)').matches, min = desk ? s / 2 : 4;
+  document.querySelectorAll('.stripes, .fit').forEach(w => {
+    w.style.width = 'auto'; w.style.marginInline = '0';
+    const a = w.getBoundingClientRect().width;
+    w.style.marginInline = '';
+    let n = Math.floor(a / s); if (n % 2 === 0) n -= 1;
+    const side = (a - n * s) / 2;
+    if (!(desk && w.dataset.edge) && side > 0.5 && side < min) n -= 2;
+    w.style.width = n * s + 'px';
+  });
+};
+fitWalls();
+// Табличка в концовке — ровно под средними рамками: края совпадают с краями второй и четвёртой (на телефоне рамок три — по всему ряду).
+// Уже ряда — нарочно: во всю ширину это баннер; «почти совпало» (15 px мимо) глаз читает как ошибку — поэтому край в край.
+const alignPlaque = () => {
+  const pl = document.querySelector('footer .plaque'); if (!pl) return;
+  const fr = [...document.querySelectorAll('footer .frames .frame')].filter(f => f.offsetWidth);
+  if (fr.length < 3) return;
+  const [a, b] = fr.length >= 5 ? [fr[1], fr[3]] : [fr[0], fr[fr.length - 1]];
+  pl.style.maxWidth = 'none';
+  pl.style.width = (b.getBoundingClientRect().right - a.getBoundingClientRect().left) + 'px';
+};
+alignPlaque();
+addEventListener('load', alignPlaque);
+let fitT; addEventListener('resize', () => { clearTimeout(fitT); fitT = setTimeout(() => { fitWalls(); alignPlaque(); }, 60); });
+
+// Плашка записи: общая запись «Запись в Буклю» всегда под рукой. Прячется только там, где на экране та же общая кнопка (первый экран, день) и под окном записи;
+// рядом с выбором мастера или салона («Запись к Варваре», «Онлайн-запись») видна — это уточнение, а не вторая такая же кнопка.
+const fl = document.querySelector('[data-float]');
+const seen = new Set(); let pastHero = true;
+const flUpd = () => { const on = pastHero && seen.size === 0; fl.classList.toggle('on', on); fl.tabIndex = on ? 0 : -1; fl.setAttribute('aria-hidden', on ? 'false' : 'true'); };
+// над чёрным разделом плашка белая
+// без слушателя прокрутки: наблюдатель смотрит полосу в 1 px на высоте середины плашки (низ 16 + половина высоты 28 = 44 px от низа окна)
+const floors = [...document.querySelectorAll('.floor')];
+const under = new Set(); let flTio;
+const flTone = () => {
+  flTio?.disconnect(); under.clear();
+  const y = innerHeight - 44;
+  flTio = new IntersectionObserver(es => { es.forEach(e => e.isIntersecting ? under.add(e.target) : under.delete(e.target)); fl.classList.toggle('on-dark', under.size > 0); },
+    { rootMargin: `${-y}px 0px ${-(innerHeight - y - 1)}px 0px` });
+  floors.forEach(f => flTio.observe(f));
+};
+flTone(); addEventListener('resize', () => { clearTimeout(flTone.t); flTone.t = setTimeout(flTone, 60); });
+const flIo = new IntersectionObserver(es => { es.forEach(e => e.isIntersecting ? seen.add(e.target) : seen.delete(e.target)); flUpd(); });
+document.querySelectorAll('[data-generic]').forEach(el => flIo.observe(el));
+pastHero = true;
+
+// Телефон в шапке (только компьютер) тает, пока на экране тот же номер в адресах или на табличке внизу: один номер на экран.
+// Под шапкой (80 px) номер не считается — его там не видно.
+const hTel = document.querySelector('header .tel'), telsOn = new Set();
+const telIo = new IntersectionObserver(es => {
+  es.forEach(e => e.isIntersecting ? telsOn.add(e.target) : telsOn.delete(e.target));
+  const off = telsOn.size > 0; hTel.classList.toggle('off', off); hTel.tabIndex = off ? -1 : 0;
+}, { rootMargin: '-80px 0px 0px 0px' });
+document.querySelectorAll('.phone a[href^="tel"], .plaque a[href^="tel"]').forEach(a => telIo.observe(a));
+
+// Окно записи: из карточки мастера — «Запись к Варваре»; закрывается крестиком, кликом мимо и Esc, без прыжка страницы.
+const sheet = document.querySelector('.sheet');
+const sheetH = document.querySelector('[data-sheet-h]');
+// Окно записи. Общая запись — оба салона. Из карточки мастера — только его салоны, ссылки сразу к нему (master= в их онлайн-записи),
+// и строка, что будет дальше: в их записи сначала услуга, потом свободное время этого мастера (проверено 21.10 на Диме).
+const places = [...sheet.querySelectorAll('[data-place]')];
+const lead = sheet.querySelector('[data-lead]');
+const leadAll = lead.textContent;
+places.forEach(p => { p.dataset.base = p.href; });
+document.querySelectorAll('[data-book]').forEach(a => a.addEventListener('click', () => {
+  sheetH.textContent = a.dataset.to ? 'Запись ' + a.dataset.to : 'Запись в Буклю';
+  const pairs = Object.fromEntries((a.dataset.m || '').split(',').filter(Boolean).map(x => x.split(':')));
+  const own = Object.keys(pairs).length > 0;
+  places.forEach(p => {
+    const id = pairs[p.dataset.place];
+    p.hidden = own && !id;
+    p.href = id ? p.dataset.base + '&master=' + id : p.dataset.base;
+  });
+  lead.textContent = own ? nb(`Сначала выберите услугу, потом откроется свободное время ${a.dataset.of}.`) : leadAll;
+}));
+
+// «Вся команда» ↔ «Свернуть». Стена плавно меняет высоту, лишние ряды тают и срезаются её краем.
+// При сворачивании, если кнопка на экране, страница едет вместе со стеной — кнопка остаётся под пальцем.
+const cardsEl = document.querySelector('.cards');
+const allBtn = document.querySelector('[data-all]');
+const ease = t => 1 - Math.pow(1 - t, 4);
+let raf = 0, extra = [], isOpen = false;
+allBtn.setAttribute('aria-expanded', 'false');
+allBtn.addEventListener('click', () => {
+  const open = isOpen = !isOpen;                      // можно передумать посреди движения — пойдёт обратно с текущей высоты
+  const still = matchMedia('(prefers-reduced-motion:reduce)').matches;
+  cancelAnimationFrame(raf);
+  const h0 = cardsEl.getBoundingClientRect().height;
+  cardsEl.style.height = '';
+  let fresh = false;
+  if (open) {
+    if (!cardsEl.classList.contains('all')) { extra = [...cardsEl.children].filter(c => getComputedStyle(c).display === 'none'); fresh = true; }
+    cardsEl.classList.add('all');
+  } else cardsEl.classList.remove('all');
+  const h1 = cardsEl.getBoundingClientRect().height;
+  if (!open) cardsEl.classList.add('all');            // до конца движения уходящие ряды на месте
+  if (!still) cardsEl.style.height = h0 + 'px';      // до первого кадра стена держит прежнюю высоту — полная не мелькнёт
+  allBtn.textContent = open ? 'Свернуть' : 'Вся команда';
+  allBtn.setAttribute('aria-expanded', String(open));
+  const r = allBtn.getBoundingClientRect();
+  const follow = !open && r.top < innerHeight && r.bottom > 0;
+  const y0 = scrollY;
+  extra.forEach(c => c.classList.add('fade'));
+  if (open && fresh) { extra.forEach(c => c.classList.add('ghost')); requestAnimationFrame(() => requestAnimationFrame(() => extra.forEach(c => c.classList.remove('ghost')))); }
+  else extra.forEach(c => c.classList.toggle('ghost', !open));
+  const done = () => {
+    cardsEl.classList.remove('moving'); cardsEl.style.height = '';
+    if (!open) cardsEl.classList.remove('all');
+    extra.forEach(c => c.classList.remove('fade', 'ghost'));
+    document.documentElement.style.scrollBehavior = '';
+    if (follow) scrollTo(0, y0 - (h0 - h1));
+  };
+  if (still) { done(); return; }
+  const dur = open ? 560 : 440, t0 = performance.now();
+  cardsEl.classList.add('moving');
+  document.documentElement.style.scrollBehavior = 'auto';
+  const step = now => {
+    const k = ease(Math.min(1, (now - t0) / dur));
+    cardsEl.style.height = h0 + (h1 - h0) * k + 'px';
+    if (follow) scrollTo(0, y0 - (h0 - h1) * k);
+    if (k < 1) raf = requestAnimationFrame(step); else done();
+  };
+  raf = requestAnimationFrame(step);
+});
+
+// Фото проявляются по мере загрузки
+document.querySelectorAll('.frame img, .card .ph img').forEach(i => {
+  if (i.complete) return;
+  i.classList.add('wait');
+  const show = () => i.classList.remove('wait');
+  i.addEventListener('load', show, { once: true }); i.addEventListener('error', show, { once: true });
+});
+
+let opened = false;
+document.querySelectorAll('a[href="#book"]').forEach(a => a.addEventListener('click', () => { opened = true; }));
+document.querySelectorAll('[data-later]').forEach(a => a.addEventListener('click', e => e.preventDefault()));
+const sync = () => {
+  const on = location.hash === '#book';
+  document.body.classList.toggle('book', on);
+  document.documentElement.classList.toggle('lock', on);
+  sheet.inert = !on;
+  if (on) setTimeout(() => sheet.querySelector('.x').focus({ preventScroll: true }), 50);
+};
+const close = () => {
+  if (location.hash !== '#book') return;
+  if (opened) { opened = false; history.back(); }
+  else { history.replaceState(null, '', location.pathname + location.search); sync(); }
+};
+addEventListener('hashchange', sync); sync();
+document.querySelectorAll('[data-close]').forEach(b => b.addEventListener('click', close));
+addEventListener('keydown', e => { if (e.key === 'Escape') close(); });
+</script>
+</body>
+</html>
